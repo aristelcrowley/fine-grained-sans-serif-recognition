@@ -34,7 +34,7 @@
     0.224,
     0.225
   ],
-  "best_val_acc": 0.9858,
+  "best_val_acc": 0.9147,
   "training_info": {
     "warmup_epochs": 5,
     "finetune_epochs": 25,
