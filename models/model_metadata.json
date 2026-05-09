@@ -1,5 +1,34 @@
 {
-  "architecture": "efficientnet_b2",
+  "default_model_key": "domain_randomized",
+  "models": {
+    "clean_only": {
+      "checkpoint": "clean_only_model.pth",
+      "experiment": "ablation_efficientnet_b0_clean_only",
+      "display_name": "Clean-only EfficientNet-B0",
+      "architecture": "efficientnet_b0",
+      "training_data": "clean_only_train",
+      "best_val_acc": 0.9877,
+      "randomized_test_acc": 0.4717,
+      "randomized_macro_f1": 0.4825,
+      "clean_test_acc": 0.9881,
+      "clean_macro_f1": 0.9881
+    },
+    "domain_randomized": {
+      "checkpoint": "domain_randomized_model.pth",
+      "experiment": "proposed_efficientnet_b0_domain_randomized",
+      "display_name": "Domain-randomized EfficientNet-B0",
+      "architecture": "efficientnet_b0",
+      "training_data": "full_domain_randomized",
+      "best_val_acc": 0.8957,
+      "randomized_test_acc": 0.9,
+      "randomized_macro_f1": 0.9001,
+      "clean_test_acc": 0.9531,
+      "clean_macro_f1": 0.9531
+    }
+  },
+  "architecture": "efficientnet_b0",
+  "checkpoint": "domain_randomized_model.pth",
+  "saved_experiment": "proposed_efficientnet_b0_domain_randomized",
   "num_classes": 20,
   "img_size": 224,
   "class_names": [
@@ -34,14 +63,65 @@
     0.224,
     0.225
   ],
-  "best_val_acc": 0.9147,
+  "preprocessing": "square_resize",
+  "primary_eval": "domain_randomized_test",
+  "secondary_eval": "clean_test",
+  "test_acc": 0.9,
+  "macro_f1": 0.9001,
   "training_info": {
     "warmup_epochs": 5,
     "finetune_epochs": 25,
-    "total_epochs": 30,
     "batch_size": 64,
     "backbone_lr": 0.0001,
     "head_lr": 0.001,
-    "label_smoothing": 0.1
-  }
+    "label_smoothing": 0.1,
+    "split_protocol": "train/val/test; validation for checkpoint selection; randomized test held out until final evaluation",
+    "study_design": "same EfficientNet-B0 architecture; clean-only ablation versus domain-randomized training"
+  },
+  "experiment_results": [
+    {
+      "experiment": "ablation_efficientnet_b0_clean_only",
+      "role": "clean_only_ablation",
+      "model_key": "clean_only",
+      "display_name": "Clean-only EfficientNet-B0",
+      "architecture": "efficientnet_b0",
+      "training_data": "clean_only_train",
+      "primary_eval": "domain_randomized_test",
+      "best_epoch": 29,
+      "best_val_loss": 0.6306549233436585,
+      "best_val_acc": 0.9876666666666667,
+      "primary_test_loss": null,
+      "primary_test_acc": 0.47173333333333334,
+      "primary_macro_f1": 0.4824818853187251,
+      "primary_weighted_f1": 0.48248188531872516,
+      "randomized_test_acc": 0.47173333333333334,
+      "randomized_macro_f1": 0.4824818853187251,
+      "clean_test_loss": 0.6283814124425252,
+      "clean_test_acc": 0.9881333333333333,
+      "clean_macro_f1": 0.988131375447227,
+      "clean_to_randomized_drop": 0.5164
+    },
+    {
+      "experiment": "proposed_efficientnet_b0_domain_randomized",
+      "role": "proposed",
+      "model_key": "domain_randomized",
+      "display_name": "Domain-randomized EfficientNet-B0",
+      "architecture": "efficientnet_b0",
+      "training_data": "full_domain_randomized",
+      "primary_eval": "domain_randomized_test",
+      "best_epoch": 26,
+      "best_val_loss": 0.8896718295415242,
+      "best_val_acc": 0.8956666666666667,
+      "primary_test_loss": 0.8780709044774373,
+      "primary_test_acc": 0.9,
+      "primary_macro_f1": 0.9000848179159116,
+      "primary_weighted_f1": 0.9000848179159119,
+      "randomized_test_acc": 0.9,
+      "randomized_macro_f1": 0.9000848179159116,
+      "clean_test_loss": 0.7279840057690938,
+      "clean_test_acc": 0.9531333333333334,
+      "clean_macro_f1": 0.9531448479924919,
+      "clean_to_randomized_drop": 0.053133333333333366
+    }
+  ]
 }
